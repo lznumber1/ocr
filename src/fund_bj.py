@@ -11,10 +11,7 @@
 	http://www.bjgjj.gov.cn/wsyw/servlet/PicCheckCode1
 """
 
-from PIL import Image
-from PIL import ImageFilter
-import requests
-import time
+from PIL import Image,ImageFilter
 from collections import OrderedDict
 import numpy as np
 from sklearn import svm
