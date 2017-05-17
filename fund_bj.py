@@ -1,6 +1,15 @@
 #!usr/bin/env python
-#coding:utf-8
+# -*- coding:utf-8 -*-
 
+
+"""
+北京公积金验证码识别，识别率99%
+
+:date
+	2017-05-17
+:site
+	http://www.bjgjj.gov.cn/wsyw/servlet/PicCheckCode1
+"""
 
 from PIL import Image
 from PIL import ImageFilter
@@ -13,14 +22,18 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.externals import joblib
 
 
-
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 
-clf = joblib.load('./fund_bj.m')
+clf = joblib.load('./model/fund_bj.m')
 
 
 def preprocess(im):
+	""" 
+	该方法用于去噪分割图片
+	:param im: image对象
+	:returns: 切割出的小图片列表
+	"""
 	col_cnt = OrderedDict()
 	w,h = im.size
 	pix = im.load()
@@ -74,7 +87,12 @@ def preprocess(im):
 	return subimgs
 
 
-def im2arr(im):
+def im2lst(im):
+	""" 
+	将图片转为list对象
+	:param im: image对象
+	:returns: 图片像素列表
+	"""
 	w,h = im.size
 	lst = []
 	pix = im.convert('L').load()
@@ -85,13 +103,13 @@ def im2arr(im):
 
 
 def test():
-	for x in xrange(101,201):
+	for x in xrange(1,101):
 		filename = str(x)+'.jpg'
-		im = Image.open('./test/'+filename)
+		im = Image.open('./image/fund_bj/'+filename)
 		subimgs = preprocess(im)
 		pcode = ''
 		for subimg in subimgs:
-			lst = im2arr(subimg)
+			lst = im2lst(subimg)
 			r = clf.predict([lst])
 			pcode += r[0]
 		print '====>>>> %s:%s' % (filename,pcode)
