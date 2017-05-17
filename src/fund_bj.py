@@ -25,8 +25,6 @@ from sklearn.externals import joblib
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 
-clf = joblib.load('./model/fund_bj.m')
-
 
 def preprocess(im):
 	""" 
@@ -103,9 +101,10 @@ def im2lst(im):
 
 
 def test():
+	clf = joblib.load('../model/fund_bj.m')
 	for x in xrange(1,101):
 		filename = str(x)+'.jpg'
-		im = Image.open('./image/fund_bj/'+filename)
+		im = Image.open('../image/fund_bj/'+filename)
 		subimgs = preprocess(im)
 		pcode = ''
 		for subimg in subimgs:
